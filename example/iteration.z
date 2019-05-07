@@ -1,0 +1,12 @@
+=i 16;
+LOOP i {
+	PRINTL i "bottles of beer on the wall, " i "bottles of beer.";
+	=i (i - 1); 
+
+	IF i {
+		PRINTL "Take one down, pass it around, " i "bottles of beer on the wall.";
+	} ELSE {
+		PRINTL "Aaaaaand they're all gone, party's over.";
+	}
+}
+

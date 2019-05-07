@@ -1,0 +1,4 @@
+\Attempting to call undeclared function.\ 
+
+=x 5;
+PRINTL (SQUARE x);

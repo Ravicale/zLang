@@ -1,0 +1,10 @@
+== f x {
+	RETURN ~y {RETURN (x + y);};
+};
+
+=a (f 3);
+=b (f 11);
+
+PRINTL "(a 5) is " (a 5);
+PRINTL "(b 6) is " (b 6);
+PRINTL "(a 10) is " (a 10);

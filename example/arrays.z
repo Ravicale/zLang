@@ -1,0 +1,24 @@
+=string "Hello World!";
+=i 12;
+=revString 0;
+
+LOOP (i > 0) {
+	=i (i - 1);
+	IF (i = 11) {
+		=revString string[i];
+	} ELSE {
+		=revString #revString string[i];
+	}
+}
+
+PRINTL "Reversing a string (array of chars)";
+PRINTL "     Normal- '" #string "'";
+PRINTL "     Reversed- '" #revString "'";
+
+LOOP (i < 12) {
+	=revString[i] string[i];
+	=i (i + 2);
+}
+
+PRINTL "Replacing every other value of reversed string with original value.";
+PRINTL "     Result- '" #revString  "'";

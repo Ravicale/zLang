@@ -1,0 +1,6 @@
+\If statement without value.\
+
+=z 1;
+IF {
+	PRINT z;
+}

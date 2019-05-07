@@ -1,0 +1,7 @@
+\Missing semicolon on function declaration.\
+
+==SQUARE x {
+	RETURN (x * x);
+}
+
+PRINTL (SQUARE 5);

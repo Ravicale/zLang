@@ -1,0 +1,13 @@
+=selector 1 2 256;
+=i 0;
+
+LOOP (i < 3) {
+	IF (selector[i] = 1) {
+		PRINTL "IF (" selector[i] "= 1)";
+	} ELSE (selector[i] = 2) {
+		PRINTL "ELSE (" selector[i] "= 2)";
+	} ELSE {
+		PRINTL "ELSE";
+	}
+	=i (i + 1);
+} 

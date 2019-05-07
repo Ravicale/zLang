@@ -1,0 +1,15 @@
+==FIB n {
+	IF (n = 0) { RETURN 0; }
+	ELSE (n = 1) { RETURN 1; }
+	ELSE { RETURN ((FIB (n - 1)) + (FIB (n - 2))); }
+};
+
+=i 1;
+=fibonacci 0;
+
+LOOP (12 > i) {
+	=fibonacci #fibonacci (FIB i);
+	=i (i + 1);
+}
+
+PRINTL "The first twelve elements of the fibonacci sequence are: " #fibonacci;

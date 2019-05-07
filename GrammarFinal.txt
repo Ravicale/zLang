@@ -1,0 +1,89 @@
+block : statement
+      | loop
+      | conditional
+      | statement block
+      | loop block
+      | conditional block
+
+loop : LOOP value OBRACE block CBRACE
+
+conditional : IF value OBRACE block CBRACE optElse
+
+optElse : else
+        | ε
+
+else : ELSE OBRACE block CBRACE optElse
+     | ELSE value OBRACE block CBRACE optElse
+
+statement : callFunction SEMICOLON
+          | definition SEMICOLON
+          | return SEMICOLON
+
+defList : definition
+        | definition defList
+
+definition : EQUALS ID index argList
+
+return : RETURN
+       | RETURN value
+       | RETURN fullArray
+       | RETURN function
+       | RETURN THIS
+
+callFunction : ID index memberVar optArgList
+             | function optArgList
+
+function : TILDA optParamList OBRACE block CBRACE
+
+optParamList : paramList
+             | ε
+
+paramList : PARAMNAME
+          | PARAMNAME paramList
+
+valList : SPACE value
+        | SPACE value valList
+
+value : ID index memberVar
+      | INT
+      | SINGLEQUOTE CHAR SINGLEQUOTE
+      | returnedValue
+      | function
+
+returnedValue : OPAREN callFunction CPAREN
+              | OPAREN expression CPAREN
+
+optArgList : argList
+           | ε
+
+argList : fullArray
+        | valList
+        | fullArray argList
+        | valList argList
+
+fullArray : POUND ID
+          | QUOTEMARK STRING QUOTEMARK
+
+expression : value operator value
+           | value operator expression
+
+operator : EQUALS
+         | PLUS
+         | MINUS
+         | ASTERISK
+         | FORWARDSLASH 
+         | PERCENT
+         | AMPERSAND
+         | PIPE
+         | EXCALAMATION EQUALS
+         | GREATERTHAN
+         | LESSTHAN
+
+constraint : EXCLAMATION value
+           | ε
+
+index : OBRACKET value CBRACKET index
+      | ε
+
+memberVar : DOT ID index memberVar
+          | ε

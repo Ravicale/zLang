@@ -1,0 +1,7 @@
+\Attempting to perform math expression with wrong types.\
+
+==seven {RETURN 7;};
+=three '3';
+
+PRINTL (seven) "+ " three "= " (seven + three);
+

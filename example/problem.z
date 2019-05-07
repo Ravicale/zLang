@@ -1,0 +1,7 @@
+=fp (FOPEN #CL[0].arg);
+=sum 0;
+LOOP (FEOF fp) {
+	=sum (sum + (FGET fp));
+}
+FCLOSE fp;
+PRINTL sum;

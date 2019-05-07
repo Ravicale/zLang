@@ -1,0 +1,43 @@
+==STRING s l {
+	=str #s;
+	=length l;
+
+	==CAT s {
+		=str #str #s.str;
+		=length (length + s.length);
+	};
+
+	==PRINTSTR {
+		PRINTL "    " #str " | Length = "#length;
+	};
+
+	==GETCHAR i {
+		IF (i < l) {
+			RETURN str[i];
+		} ELSE {
+			RETURN "ERR";
+		}
+	};
+
+	RETURN THIS;
+};
+
+PRINTL "Creating object holding string and length.";
+=text (STRING "I'm an object!" 14);
+PRINTL "Comparing print method with builtin print using object member variables as arguments.";
+PRINTL "    " #text.str " | Length = " text.length;
+text.PRINTSTR;
+PRINTL "Creating another object of same type.";
+=moreText (STRING " I can do methods!" 18);
+moreText.PRINTSTR;
+PRINTL "Using concatenate method of first object with second object as argument.";
+text.CAT moreText;
+text.PRINTSTR;
+PRINTL "Replacing all text in object with exclamation points gotten via getter method.";
+=i text.length;
+LOOP i {
+	=i (i - 1);
+	=text.str[i] (text.GETCHAR 13);
+}
+text.PRINTSTR;
+

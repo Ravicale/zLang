@@ -1,0 +1,14 @@
+==CURRYMATH f a {
+	RETURN ~b {RETURN (f a b);};
+};
+
+=MATH (CURRYMATH ~a b {RETURN (a + b);} 10)
+	(CURRYMATH ~a b {RETURN (a - b);} 10)
+	(CURRYMATH ~a b {RETURN (a * b);} 10)
+	(CURRYMATH ~a b {RETURN (a / b);} 10)
+	(CURRYMATH ~a b {RETURN (a % b);} 10);
+~ {PRINTL "10 + 5 = " (MATH[0] 5);};
+~ {PRINTL "10 - 5 = " (MATH[1] 5);};
+~a {PRINTL "10 * 5 = " (MATH[2] a);} 5;
+~a {PRINTL "10 / 5 = " (MATH[3] a);} 5;
+~a {PRINTL "10 % 5 = " (MATH[4] a);} 5;
