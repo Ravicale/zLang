@@ -102,7 +102,6 @@ lexeme* evaluator::Eval(lexeme* node, lexeme* env) {
 			return EvalLoop(node, env);
 		case BLOCK:
 			return EvalBlock(node, env);
-			return node;
 		default:
 			cout << "Err: Unexpected lexeme evaluated- ";
 			node->Display();
