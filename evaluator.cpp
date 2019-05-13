@@ -65,6 +65,8 @@ lexeme* evaluator::Eval(lexeme* node, lexeme* env) {
 	switch(node->type) {
 		case INT:
 		case CHAR:
+		case BUILTIN:
+		case FILEP:
 			return node;
 		case STR:
 			return EvalString(node);
@@ -100,9 +102,6 @@ lexeme* evaluator::Eval(lexeme* node, lexeme* env) {
 			return EvalLoop(node, env);
 		case BLOCK:
 			return EvalBlock(node, env);
-		case BUILTIN:
-			return node;
-		case FILEP:
 			return node;
 		default:
 			cout << "Err: Unexpected lexeme evaluated- ";

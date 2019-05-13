@@ -42,10 +42,9 @@ class parser {
 		void Statement(lexeme*); bool StatementPending();
 		void Return(lexeme*);
 		void Definition(lexeme*);
-		void Lambda(lexeme*);
-		void FuncDefinition(lexeme*);
+		void Function(lexeme*);
 		//IDKnown is used to fix a case of ambiguity regarding ReturnedValues without making the syntax (more) unwieldy.
-		void CallFunction(lexeme*); void CallFunctionIDKnown(lexeme*, lexeme*);
+		void Call(lexeme*); void CallIDKnown(lexeme*, lexeme*);
 		void ParamList(lexeme*);
 		void Value(lexeme*); bool ValuePending();
 		void ReturnedValue(lexeme*);

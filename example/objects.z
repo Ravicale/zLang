@@ -1,17 +1,17 @@
-==STRING s l {
+=STRING ~s l {
 	=str #s;
 	=length l;
 
-	==CAT s {
+	=CAT ~s {
 		=str #str #s.str;
 		=length (length + s.length);
 	};
 
-	==PRINTSTR {
+	=PRINTSTR ~{
 		PRINTL "    " #str " | Length = "#length;
 	};
 
-	==GETCHAR i {
+	=GETCHAR ~i {
 		IF (i < l) {
 			RETURN str[i];
 		} ELSE {

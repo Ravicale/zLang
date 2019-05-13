@@ -1,4 +1,4 @@
-==FIB n {
+=FIB ~n {
 	IF (n = 0) { RETURN 0; }
 	ELSE (n = 1) { RETURN 1; }
 	ELSE { RETURN ((FIB (n - 1)) + (FIB (n - 2))); }

@@ -194,7 +194,7 @@ bool parser::StatementPending() {
  */
 void parser::Statement(lexeme* currNode) {
     if (Check(ID) || Check(TILDA)) {
-        CallFunction(currNode);
+        Call(currNode);
     } else if (Check(RETURN)) {
         Return(currNode);
     } else {
@@ -220,7 +220,7 @@ void parser::Return(lexeme* currNode) {
     } else if (FullArrayPending()){
         FullArray(currNode);
     } else if (Check(TILDA)) {
-    	Lambda(currNode);
+    	Function(currNode);
     } else {
         return;
     }
@@ -239,14 +239,10 @@ void parser::Return(lexeme* currNode) {
  */
 void parser::Definition(lexeme* currNode) {
     Match(EQ);
-    if (Check(EQ)) {
-        FuncDefinition(currNode);
-    } else {
-        currNode = currNode->left = new lexeme(VAR);
-        Variable(currNode);
-        MemberVar(currNode->left);
-        ArgList(currNode, false);
-    }
+    currNode = currNode->left = new lexeme(VAR);
+    Variable(currNode);
+    MemberVar(currNode->left);
+    ArgList(currNode, false);
 
     return;
 }
@@ -260,7 +256,7 @@ void parser::Definition(lexeme* currNode) {
 			/	  \
 [?ParamList]	   [+Block]
  */
-void parser::Lambda(lexeme* currNode) {
+void parser::Function(lexeme* currNode) {
     Match(TILDA);
     currNode = currNode->left = new lexeme(FUNC);
     currNode = currNode->right = new lexeme(JOIN);
@@ -274,40 +270,19 @@ void parser::Lambda(lexeme* currNode) {
 /*
                             [currNode]
                            /
-                    [+FUNC]
-                   /      \
-        [+Variable]       [+JOIN]
-       /				  /     \
-[?Index]      [?ParamList]		[+Block]
- */
-void parser::FuncDefinition(lexeme* currNode) {
-    Match(EQ);
-    currNode = currNode->left = new lexeme(FUNC);
-    currNode->right = new lexeme(JOIN);
-    Variable(currNode);
-    ParamList(currNode->right);
-    Match(OBRACE);
-    Block(currNode->right);
-    Match(CBRACE);
-    return;
-}
-
-/*
-                            [currNode]
-                           /
                     [+CALL]
                     /     \
          [+Variable]       [?Arglist]
         /          \
 [?Index]           [?MemberVar]
  */
-void parser::CallFunction(lexeme* currNode) {
+void parser::Call(lexeme* currNode) {
     currNode = currNode->left = new lexeme(CALL);
     if (Check(ID)) {
     	Variable(currNode);
     	MemberVar(currNode->left);
     } else {
-    	Lambda(currNode);
+    	Function(currNode);
     }
     if (ArgListPending()) {
         ArgList(currNode, false);
@@ -316,7 +291,7 @@ void parser::CallFunction(lexeme* currNode) {
 }
 
 //Callfunction, but placed to the right of currNode.
-void parser::CallFunctionIDKnown(lexeme* currNode, lexeme* dummy) {
+void parser::CallIDKnown(lexeme* currNode, lexeme* dummy) {
     currNode = currNode->right = new lexeme(CALL);
     currNode->left = dummy;
     if (ArgListPending()) {
@@ -362,7 +337,7 @@ void parser::Value(lexeme* currNode) {
 	} else if (Check(OPAREN)) {
         ReturnedValue(currNode);
     } else {
-    	Lambda(currNode);
+    	Function(currNode);
     }
 
     return;
@@ -380,7 +355,7 @@ void parser::ReturnedValue(lexeme* currNode) {
     Match(OPAREN);
     if (Check(TILDA)) {
     	lexeme* dummy = new lexeme(JOIN);
-    	CallFunction(dummy);
+    	Call(dummy);
     	currNode->right = dummy->left;
     } else {
 	    lexeme* dummy = new lexeme(JOIN);
@@ -391,7 +366,7 @@ void parser::ReturnedValue(lexeme* currNode) {
 	    }
 	    
 	    if ((ValuePending() || FullArrayPending() || Check(CPAREN)) && dummy->type == ID) {
-	        CallFunctionIDKnown(currNode, dummy);  
+	        CallIDKnown(currNode, dummy);  
 	    } else if (OperatorPending()) {
 	        Expression(currNode, dummy);
 	    }

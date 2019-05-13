@@ -1,4 +1,4 @@
-==CURRYMATH f a {
+=CURRYMATH ~f a {
 	RETURN ~b {RETURN (f a b);};
 };
 
