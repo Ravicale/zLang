@@ -8,18 +8,18 @@ lexer::lexer(ifstream& program, bool dbg) :prog(program) {
 }
 
 bool lexer::Scan() {
-	lexeme currLexeme = Lex();
-	while (currLexeme.type != END) { //Where the majority of the action happens.
-		if (currLexeme.type == ERR) {
+	lexeme* currLexeme = Lex();
+	while (currLexeme->type != END) { //Where the majority of the action happens.
+		if (currLexeme->type == ERR) {
 			return false; //Error code if lex runs into issue.
 		}
 		if (debug) {
-			currLexeme.Display();
+			currLexeme->Display();
 		}
 		currLexeme = Lex();
 	}
 	if (debug) {
-		currLexeme.Display(); //Required to display EOF.	
+		currLexeme->Display(); //Required to display EOF.	
 	}
 	Reset();
 	return true;
@@ -36,55 +36,55 @@ int lexer::GetLine() {
 	return lineCount;
 }
 
-lexeme lexer::Lex() {
+lexeme* lexer::Lex() {
 	SkipWhiteSpace();
 	char ch;
 	prog.get(ch);
 	if (prog.fail()) { //eof() doesn't seem to work in this case, but fail() does. Will likely ask about during office hours.
-		return lexeme(END);
+		return new lexeme(END);
 	}
 
 	switch(ch) {
 		case '=':
-			return lexeme(EQ);
+			return new lexeme(EQ);
 		case '+':
-			return lexeme(PLUS);
+			return new lexeme(PLUS);
 		case '*':
-			return lexeme(TIMES);
+			return new lexeme(TIMES);
 		case '/':
-			return lexeme(DIV);		
+			return new lexeme(DIV);		
 		case '%':
-			return lexeme(MOD);
+			return new lexeme(MOD);
 		case '&':
-			return lexeme(AND);
+			return new lexeme(AND);
 		case '|':
-			return lexeme(OR);
+			return new lexeme(OR);
 		case '!':
-			return lexeme(NOT);
+			return new lexeme(NOT);
 		case '~':
-			return lexeme(TILDA);
+			return new lexeme(TILDA);
 		case ';':
-			return lexeme(SEMICOLON);
+			return new lexeme(SEMICOLON);
 		case '[':
-			return lexeme(OBRACKET);
+			return new lexeme(OBRACKET);
 		case ']':
-			return lexeme(CBRACKET);
+			return new lexeme(CBRACKET);
 		case '{':
-			return lexeme(OBRACE);
+			return new lexeme(OBRACE);
 		case '}':
-			return lexeme(CBRACE);
-		case '<':
-			return lexeme(LESSER);
+			return new lexeme(CBRACE);
+		case '<': 
+			return new lexeme(LESSER);
 		case '>':
-			return lexeme(GREATER);
+			return new lexeme(GREATER);
 		case '#':
-			return lexeme(POUND);
+			return new lexeme(POUND);
 		case '(':
-			return lexeme(OPAREN);
+			return new lexeme(OPAREN);
 		case ')':
-			return lexeme(CPAREN);
+			return new lexeme(CPAREN);
 		case '.':
-			return lexeme(DOT);
+			return new lexeme(DOT);
 		default:
 			if (ch == '"') {
 				return LexStr();
@@ -100,7 +100,7 @@ lexeme lexer::Lex() {
 	}
 
 	cout << "Error on line: " << lineCount << " | Invalid item '" << ch << "'" << endl;
-	return lexeme(ERR);
+	return new lexeme(ERR);
 }
 
 void lexer::SkipWhiteSpace () {
@@ -122,7 +122,7 @@ void lexer::SkipWhiteSpace () {
 	return;	
 }
 
-lexeme lexer::LexChar() {
+lexeme* lexer::LexChar() {
 	char ch;
 	string str;
 	prog.get(ch);
@@ -130,7 +130,7 @@ lexeme lexer::LexChar() {
 		str.push_back(ch);
 		prog.get(ch);
 		if (!prog.eof() && !prog.fail() && ch == '\'') {
-			return lexeme(CHAR, str);
+			return new lexeme(CHAR, str);
 		}
 	} else if (!prog.eof() && ch == '\\') { //In case the character is something like a newline.
 		str.push_back(ch);
@@ -139,7 +139,7 @@ lexeme lexer::LexChar() {
 			str.push_back(ch);
 			prog.get(ch);
 			if (!prog.eof() && !prog.fail() && ch == '\'') {
-				return lexeme(CHAR, str);
+				return new lexeme(CHAR, str);
 			}
 		}
 	}
@@ -149,10 +149,10 @@ lexeme lexer::LexChar() {
 	} else {
 		cout << "Error on line: " << lineCount << " | Invalid \"character\": " << endl;
 	}
-	return lexeme(ERR);
+	return new lexeme(ERR);
 }
 
-lexeme lexer::LexInt() {
+lexeme* lexer::LexInt() {
 	char ch;
 	string str;
 	prog.get(ch);
@@ -162,7 +162,7 @@ lexeme lexer::LexInt() {
 		prog.get(ch);
 		if (prog.eof() || !isdigit(ch)) {
 			prog.unget();
-			return lexeme(MIN);
+			return new lexeme(MIN);
 		}
 	}
 
@@ -172,10 +172,10 @@ lexeme lexer::LexInt() {
 	}
 	prog.unget();
 
-	return lexeme(INT, str);
+	return new lexeme(INT, str);
 }
 
-lexeme lexer::LexStr() {
+lexeme* lexer::LexStr() {
 	char ch;
 	string str;
 	prog.get(ch);
@@ -189,13 +189,13 @@ lexeme lexer::LexStr() {
 
 	if (prog.eof()) {
 		cout << "Error on line: " << lineCount << " | Unexpected end of file." << endl;
-		return lexeme(ERR);
+		return new lexeme(ERR);
 	}
 
-	return lexeme(STR, str);
+	return new lexeme(STR, str);
 }
 
-lexeme lexer::LexVarOrWord() {
+lexeme* lexer::LexVarOrWord() {
 	char ch;
 	string str;
 	prog.get(ch);
@@ -206,14 +206,14 @@ lexeme lexer::LexVarOrWord() {
 	prog.unget();
 
 	if (!str.compare("LOOP")) { //Keyword handling.
-		return lexeme(LOOP);
+		return new lexeme(LOOP);
 	} else if (!str.compare("IF")) {
-		return lexeme(IF);
+		return new lexeme(IF);
 	} else if (!str.compare("ELSE")) {
-		return lexeme(ELSE);
+		return new lexeme(ELSE);
 	} else if (!str.compare("RETURN")) {
-		return lexeme(RETURN);
+		return new lexeme(RETURN);
 	}
 
-	return lexeme(ID, str);
+	return new lexeme(ID, str);
 }

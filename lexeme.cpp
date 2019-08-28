@@ -133,7 +133,7 @@ lexeme::lexeme(lexeme* env, lexeme* variables, lexeme* vals) {
 void lexeme::Display() {
 	InDisplay();
 	if (type != JOIN) {
-		cout << endl;
+		cout << "\n";
 	}
 	return;
 }
@@ -154,6 +154,36 @@ void lexeme::InDisplay() {
 		}
 		cout << "]";
 	}
+	return;
+}
+void Indent (int indent) {
+	for (int i = 0; i < indent; i++) {
+		cout << " ";
+	}
+}
+void lexeme::DisplayTree(int indent) {
+	Indent(indent);
+	Display();
+	
+	Indent(indent);
+	cout << "Left:\n";
+	
+	if (left != NULL) {
+		left->DisplayTree(indent + 4);
+	} else {
+		Indent(indent+4);
+		cout << "NULL\n";
+	}
+
+	Indent(indent);
+	cout << "Right:\n";
+	if (right != NULL) {
+		right->DisplayTree(indent + 4);
+	} else {
+		Indent(indent+4);
+		cout << "NULL\n";
+	}
+
 	return;
 }
 

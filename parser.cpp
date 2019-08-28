@@ -3,8 +3,8 @@ Implementation file for parser.h*/
 #include "parser.h"
 
 parser::parser(lexer& lexer, bool dbg) :lxr(lexer) {
-    lexeme currLexeme();
-    lexeme errLexeme();
+    currLexeme = NULL;
+    errLexeme = NULL;
     parseTree = NULL;
     debug = dbg;
     syntaxError = false;
@@ -18,7 +18,7 @@ bool parser::Scan () {
     if (syntaxError) {
         cout << "Err found on line: " << errLine << endl;
         cout << "Unexpected Token:  ";
-        errLexeme.Display();
+        errLexeme->Display();
     } else if (debug) {
         cout << "legal" << endl;
     }
@@ -42,7 +42,7 @@ void parser::ReportError() {
 }
 
 bool parser::Check(tokenType t) {
-    if (currLexeme.type == t) {
+    if (currLexeme->type == t) {
         return 1;
     }
     return 0;
@@ -50,10 +50,10 @@ bool parser::Check(tokenType t) {
 
 lexeme* parser::Match(tokenType t) {
     lexeme* retLexeme = NULL;
-    if (currLexeme.type == t) {
-        if (currLexeme.type == ID || currLexeme.type == INT || currLexeme.type == CHAR || currLexeme.type == STR) {
-            string currVal = string(currLexeme.GetString());
-            retLexeme = new lexeme(currLexeme.type, currVal);
+    if (currLexeme->type == t) {
+        if (currLexeme->type == ID || currLexeme->type == INT || currLexeme->type == CHAR || currLexeme->type == STR) {
+            string currVal = string(currLexeme->GetString());
+            retLexeme = new lexeme(currLexeme->type, currVal);
         } else {
             retLexeme = new lexeme(t);
         }
@@ -367,7 +367,9 @@ void parser::ReturnedValue(lexeme* currNode) {
 	    
 	    if ((ValuePending() || FullArrayPending() || Check(CPAREN)) && dummy->type == ID) {
 	        CallIDKnown(currNode, dummy);  
-	    } else if (OperatorPending()) {
+	    } else if (ValuePending()) {
+			//Todo: Lisp style function calls
+		} else if (OperatorPending()) {
 	        Expression(currNode, dummy);
 	    }
     }

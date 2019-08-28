@@ -133,7 +133,8 @@ Functions:
   and a semicolon:
     |FUNCTIONNAME arg1 arg2;|
   Functions normally 'return' the last value they have evaluated, but your intentions
-  can be made explicit with a RETURN statement.
+  can be made explicit with a RETURN statement. RETURN works similarly to the equivalent
+  in other languages.
     |=FUNCTIONNAME ~param1 p2 {     |
     |    RETURN \insert value here\;|
     |};                             |
@@ -231,17 +232,15 @@ Planned Features:
     that silently operates on all lexemes that are allocated such that existing code can
     remain unchanged and that and to prevent any potential memory leaks that may appear
     in the future.
-  2. RETURN
-    It currently doesn't stop execution of the current function, this is dumb and should be
-    an easy fix.
-  3. Rework error handling.
+  2. Rework error handling.
     This would involve providing a more consistent mechanism for the parser, lexer, and
     evaluator to report errors; and creating a system by which users can create
     constraints on code to catch errors.
-  4. Standard library features for debugging.
+  3. Standard library features for debugging.
     Provide builtin functions for performing debugging actions such as displaying the
     current environment or returning a trace stack. This is especially important since
     the language currently doesn't provide very helpful error messages.
-  5. Introduce support for expressive slicing.
+  4. Introduce support for expressive slicing.
     More useful ways to get multiple values out of an array are key to making this
     language as useful as possible. 
+  5. General Cleanup

@@ -22,8 +22,8 @@ class parser {
 
 	private:
 		lexer lxr; //Lexer used to collect lexemes from program.
-		lexeme currLexeme; //Current lexeme being processed.
-		lexeme errLexeme; //Lexeme that caused error (if any).
+		lexeme* currLexeme; //Current lexeme being processed.
+		lexeme* errLexeme; //Lexeme that caused error (if any).
 		bool debug; //If set to true, will print additional debug information.
 		bool syntaxError; //If semantic analysis uncovers an error.
 		int errLine; //Line first error appeared on (if any).

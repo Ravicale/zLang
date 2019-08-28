@@ -16,7 +16,7 @@ class lexer {
 	public:
 		lexer(ifstream&, bool); //Constructor
 		bool Scan(); //Performs lexical analysis and returns whether or not all items are recognized.
-		lexeme Lex(); //Main lex function, categorizes characters to the right type.
+		lexeme* Lex(); //Main lex function, categorizes characters to the right type.
 		void Reset(); //Resets file pointer and lineCount to beginning.
 		int GetLine(); //Returns current lineCount;
 
@@ -27,9 +27,9 @@ class lexer {
 		
 		//Lexing functions.
 		void SkipWhiteSpace(); //Skips whitespace and comments to next character.
-		lexeme LexChar(); //Lexeme generators for types with values.
-		lexeme LexInt();
-		lexeme LexStr();
-		lexeme LexVarOrWord();
+		lexeme* LexChar(); //Lexeme generators for types with values.
+		lexeme* LexInt();
+		lexeme* LexStr();
+		lexeme* LexVarOrWord();
 };
 #endif

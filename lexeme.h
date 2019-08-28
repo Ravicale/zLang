@@ -26,6 +26,7 @@ class lexeme {
 		//Display functions.
 		void InDisplay(); //Displays lexeme info.
 		void Display(); //Same as above, but with a newline at the end.
+		void DisplayTree(int); //Displays all lexemes in the tree.
 
 		//Environment implementation:
 		void PrintEnv();

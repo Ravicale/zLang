@@ -67,6 +67,7 @@ lexeme* evaluator::Eval(lexeme* node, lexeme* env) {
 		case CHAR:
 		case BUILTIN:
 		case FILEP:
+		case RETURN:
 			return node;
 		case STR:
 			return EvalString(node);
@@ -94,8 +95,6 @@ lexeme* evaluator::Eval(lexeme* node, lexeme* env) {
 			return EvalFuncDef(node, env);
 		case CALL:
 			return EvalFuncCall(node, env);
-		case RETURN:
-			return EvalReturn(node, env);
 		case IF:
 			return EvalConditional(node, env);
 		case LOOP:
@@ -245,8 +244,16 @@ lexeme* evaluator::EvalBlock(lexeme* node, lexeme* env) {
 	lexeme* currNode = node;
 	while (currNode != NULL) {
 		result = Eval(currNode->left, env);
-		currNode = currNode->right;
-
+		
+		if (result->type == RETURN) {
+			if (result->left != NULL || result->right != NULL){
+				result = EvalReturn(result, env);
+			}
+			break;
+		}
+		
+		currNode = currNode->right;	
+		
 		if (debug) {
 			env->PrintEnv();
 		}
@@ -256,6 +263,10 @@ lexeme* evaluator::EvalBlock(lexeme* node, lexeme* env) {
 }
 
 lexeme* evaluator::EvalReturn(lexeme* node, lexeme* env) {
+	if (debug) {
+		node->DisplayTree(0);
+	}
+
 	if (node->left != NULL) {
 		return Eval(node->left, env);
 	} else if (node->right != NULL) {

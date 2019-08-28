@@ -1,6 +1,5 @@
 =FIB ~n {
-	IF (n = 0) { RETURN 0; }
-	ELSE (n = 1) { RETURN 1; }
+	IF (n < 2) { RETURN n; }
 	ELSE { RETURN ((FIB (n - 1)) + (FIB (n - 2))); }
 };
 

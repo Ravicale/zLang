@@ -17,22 +17,15 @@ int main (int argc, char* argv[]) {
 		return -1;
 	}
 
-	lexer lexer(program, false);
-	parser parser(lexer, false);
+	lexer lexer(program, DEBUG);
+	parser parser(lexer, DEBUG);
 	bool semResult = parser.Scan();
-
-	if (DEBUG_PARSE) {
-		parser.PrintTree();
-		printer printer(parser.parseTree);
-		printer.Print();
-		cout << endl << endl;
-	}
 
 	if (!semResult) { //If lexer or parser ran into an error.
 		cout << "Illegal" << endl;
 		return 0;
 	} else {
-		evaluator ev = evaluator(DEBUG_EVAL, argv, argc);
+		evaluator ev = evaluator(DEBUG, argv, argc);
 		ev.evaluate(parser.parseTree);
 	}
 	

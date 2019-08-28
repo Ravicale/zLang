@@ -8,11 +8,9 @@ Main file for lexical analyzer.*/
 #include "lexeme.h"
 #include "lexer.h"
 #include "parser.h"
-#include "printer.h"
 #include "evaluator.h"
 
-#define DEBUG_PARSE 0
-#define DEBUG_EVAL 0
+#define DEBUG false
 
 using namespace std;
 
